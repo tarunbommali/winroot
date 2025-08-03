@@ -4,7 +4,7 @@
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-username/winroot.git
+git clone https://github.com/tarunbommali/winroot.git
 cd winroot
 
 # 2. Install root dependencies
@@ -67,7 +67,7 @@ npm run dev
 
 - 🔐 Signup Request
 - POST /api/auth/signup
-  {
+  ```{
   "firstName": "Test",
   "lastName": "API",
   "emailId": "test@gmail.com",
@@ -85,7 +85,7 @@ npm run dev
   },
   "role": "user",
   "joinedFrom": "website"
-  }
+  }```
 
 - 🔑 Login Request
 - POST /api/auth/login
@@ -127,10 +127,12 @@ Just hit this endpoint. No request body is needed.
 
 ## 📊 Dashboards per Role
 
-**Superadmin** | View all admins/moderators, manage everything                        
-**Admin**      | View analytics, create moderators, manage platform                               
-**Moderator**  | - **Services**: Manage own services, bookings, and staff <br> - **E-commerce**: Manage own products, orders, inventory 
-**User**       | Book services or buy products                                                    
+**Superadmin**  View all admins/moderators, manage everything                        
+**Admin**       View analytics, create moderators, manage platform                               
+**Moderator**
+  - **Services**: Manage own services, bookings, and staff <br>
+  - **E-commerce**: Manage own products, orders, inventory 
+**User**        Book services or buy products                                                    
 
 ---
 
