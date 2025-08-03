@@ -3,16 +3,31 @@ const User = require("../models/user");
 const { ValidationSignUp } = require("../utils/validation");
 
 exports.signupController = async (req, res) => {
-  const { firstName, lastName, emailId, password, age, gender, photoUrl } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    emailId,
+    password,
+    phoneNumber,
+    age,
+    gender,
+    photoUrl,
+    address,
+    role,
+    joinedFrom
+  } = req.body;
 
   try {
     const errors = ValidationSignUp(req.body);
 
-    // Check if email already exists
-    const existingUser = await User.findOne({ emailId });
+    // Check if email or phone number already exists
+    const existingUser = await User.findOne({
+      $or: [{ emailId }, { phoneNumber }],
+    });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already exists" });
+      return res
+        .status(400)
+        .json({ message: "Email or phone number already exists" });
     }
 
     // If validation errors exist
@@ -29,9 +44,13 @@ exports.signupController = async (req, res) => {
       lastName,
       emailId,
       password: hashedPassword,
+      phoneNumber,
       age,
       gender,
       photoUrl,
+      address,      // expects { street, city, state, postalCode, country }
+      role: role || "user", // default to "user"
+      joinedFrom: joinedFrom || "website",
     });
 
     await newUser.save();
@@ -43,9 +62,14 @@ exports.signupController = async (req, res) => {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         emailId: newUser.emailId,
+        phoneNumber: newUser.phoneNumber,
         age: newUser.age,
         gender: newUser.gender,
         photoUrl: newUser.photoUrl,
+        address: newUser.address,
+        role: newUser.role,
+        joinedFrom: newUser.joinedFrom,
+        createdAt: newUser.createdAt,
       },
     });
   } catch (error) {
@@ -56,7 +80,6 @@ exports.signupController = async (req, res) => {
     });
   }
 };
-
 exports.loginController = async (req, res) => {
   const { emailId, password } = req.body;
 
@@ -75,10 +98,14 @@ exports.loginController = async (req, res) => {
 
     const token = await user.getJWT();
 
-    // Set token as cookie
+    // Update lastLogin time
+    user.lastLogin = new Date();
+    await user.save();
+
+    // Set token as HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true in production
+      secure: false, // Use true in production (HTTPS)
       sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
@@ -91,9 +118,17 @@ exports.loginController = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         emailId: user.emailId,
+        phoneNumber: user.phoneNumber,
         age: user.age,
         gender: user.gender,
         photoUrl: user.photoUrl,
+        address: user.address,
+        role: user.role,
+        isVerified: user.isVerified,
+        status: user.status,
+        walletBalance: user.walletBalance,
+        lastLogin: user.lastLogin,
+        joinedFrom: user.joinedFrom,
       },
     });
   } catch (error) {
@@ -104,6 +139,7 @@ exports.loginController = async (req, res) => {
     });
   }
 };
+
 
 exports.logoutController = async (req, res) => {
   res.cookie("token", null, { expires: new Date(Date.now()) });

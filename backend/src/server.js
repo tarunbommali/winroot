@@ -1,11 +1,13 @@
 // backend/server.js
 const express = require("express");
-const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser"); 
 const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/database");
 const authRouter = require("./routes/auth"); //
+const profileRouter = require("./routes/profile");
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,11 +19,12 @@ app.use(
     credentials: true,
   })
 );
-
+app.use(cookieParser()); 
 app.use(express.json());
 
 // Mount routes
 app.use("/api/auth", authRouter);
+app.use("/api/profile", profileRouter);
 
 // Connect to MongoDB
 connectDB()
