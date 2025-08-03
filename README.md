@@ -1,5 +1,3 @@
-# START
-
 ## ⚙️ Installation
 
 ```bash
@@ -67,7 +65,8 @@ npm run dev
 
 - 🔐 Signup Request
 - POST /api/auth/signup
-  ```{
+   ```
+   {
   "firstName": "Test",
   "lastName": "API",
   "emailId": "test@gmail.com",
@@ -83,16 +82,19 @@ npm run dev
   "postalCode": "500001",
   "country": "India"
   },
-  "role": "user",
+  "role": "user", // ["user", "superadmin", "admin", "service_provider"]
   "joinedFrom": "website"
-  }```
+  }
+  ```
 
 - 🔑 Login Request
 - POST /api/auth/login
+```
   {
   "emailId": "test@gmail.com",
   "password": "Test@2025"
   }
+```
 
 - 🔓 Logout Request
 - POST /api/auth/logout
@@ -128,11 +130,12 @@ Just hit this endpoint. No request body is needed.
 ## 📊 Dashboards per Role
 
 **Superadmin**  View all admins/moderators, manage everything                        
-**Admin**       View analytics, create moderators, manage platform                               
+**Admin**       View analytics, create moderators, manage platform      
+**User**        Book services or buy products             
 **Moderator**
   - **Services**: Manage own services, bookings, and staff <br>
-  - **E-commerce**: Manage own products, orders, inventory 
-**User**        Book services or buy products                                                    
+  - **E-commerce**: Manage own products, orders, inventory
+                                       
 
 ---
 
