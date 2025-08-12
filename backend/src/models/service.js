@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const serviceSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: String,
-  price: Number,
-  duration: String,
+   price: { type: Number, required: true },
   serviceProvider: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  ratings: { type: Number, default: 0 },
+   location: { type: String, required: true },
+   rating: { type: Number, min: 0, max: 5 },
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
 }, { timestamps: true });
 
