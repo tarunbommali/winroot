@@ -7,6 +7,7 @@ require("dotenv").config();
 const connectDB = require("./config/database");
 const authRouter = require("./routes/auth"); //
 const profileRouter = require("./routes/profile");
+const serviceRouter = require("./routes/service");
 
 
 const app = express();
@@ -25,6 +26,8 @@ app.use(express.json());
 // Mount routes
 app.use("/api/auth", authRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/service", serviceRouter);
+
 
 // Connect to MongoDB
 connectDB()
